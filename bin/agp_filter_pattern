@@ -1,0 +1,38 @@
+filter_functions = Hash.new;
+
+
+filter_functions[:identity] = lambda do | chromosome, contig_name |       
+  return chromosome
+end
+
+filter_functions[:chr_match] = lambda do | chromosome, contig_name |       
+  return chromosome
+end
+
+
+$: << File.expand_path(File.dirname(__FILE__) + '/../lib')
+$: << File.expand_path('.')
+path= File.expand_path(File.dirname(__FILE__) + '/../lib/bio-agp-tools.rb')
+require path
+
+options = {}
+
+
+OptionParser.new do |opts|
+  
+  opts.banner = "Usage: agp_filter_patern.rb [options]. "
+
+  opts.on("-r", "--regex REGEX", "The regular expresion to filter. You can use CHR as a place holder for the chromosome name in the AGP. ") do |o|
+    options[:regex] = o
+  end
+
+  opts.on("-i", "--agp_input FILE", "File with the input AGP file to be transformed") do |o|
+  	options[:agp_input] = o
+  end
+
+  opts.on("-o", "--agp_output FILE", "File to write the AGP output") do |o|
+  	options[:agp_output] = o
+  end
+  
+end.parse!
+
